@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {GoogleAuthProvider, signInWithPopup, onAuthStateChanged} from "firebase/auth";
 import {auth} from "../firebase";
 import {useNavigate} from "react-router-dom";
@@ -8,6 +8,7 @@ const provider = new GoogleAuthProvider();
 
 export default function Login() {
     const navigate = useNavigate();
+    const [checkingAuth, setCheckingAuth] = useState(true);
 
     const login = async () => {
         try {
@@ -25,12 +26,25 @@ export default function Login() {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 navigate("/administracion");
-                toast.success("Sesión iniciada correctamente");
+            } else {
+                setCheckingAuth(false);
             }
         });
 
         return () => unsubscribe();
     }, [navigate]);
+
+    if (checkingAuth) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="text-center">
+                    <div
+                        className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4"></div>
+                    <p className="text-xl font-semibold text-gray-700">Cargando...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen flex flex-col justify-center items-center bg-yellow-300 text-center px-4">

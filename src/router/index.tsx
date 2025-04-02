@@ -70,9 +70,9 @@ const DocumentTitleHandler = () => {
 
     useEffect(() => {
         const titleMap: Record<string, string> = {
-            "/login": "Pokédex App - Iniciar sesión",
-            "/forbidden": "Acceso denegado",
-            "/administracion": "Panel de administración",
+            "/login": "Pokédex App - Sign In",
+            "/forbidden": "Denied Access",
+            "/administracion": "Dashboard",
         };
 
         const title = titleMap[location.pathname] || "Pokédex App";

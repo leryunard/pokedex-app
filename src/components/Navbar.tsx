@@ -31,7 +31,7 @@ export default function Navbar() {
 
     return (
         <nav className="flex justify-between items-center px-6 py-4 bg-white shadow-md">
-            <h1 className="text-xl font-bold text-gray-800">Pokédex</h1>
+            <h1 className="text-xl font-bold text-gray-800">Pokédex App</h1>
 
             {user && (
                 <div className="flex items-center gap-4">

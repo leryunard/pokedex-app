@@ -8,7 +8,6 @@ export default function DefaultLayout() {
 
     return (
         <>
-            {/* Poner notificaciones aquí */}
             <div
                 className={`relative padding-custom-course min-h-screen ${
                     mostrarSidebar ? "sm:ml-0" : ""
