@@ -47,7 +47,7 @@ export default function Navbar() {
 
                 {/* Menú en pantallas grandes */}
                 <div className="hidden lg:flex gap-6">
-                    {adminRoutes.map((route, index) => (
+                    {adminRoutes.filter(route => route.showInNavbar).map((route, index) => (
                         <NavLink
                             key={index}
                             to={`/admin/${route.path}`}
@@ -90,7 +90,7 @@ export default function Navbar() {
             {/* Menú desplegable en móvil */}
             {menuOpen && (
                 <div className="flex flex-col mt-4 gap-3 lg:hidden">
-                    {adminRoutes.map((route, index) => (
+                    {adminRoutes.filter(route => route.showInNavbar).map((route, index) => (
                         <NavLink
                             key={index}
                             to={`/admin/${route.path}`}
