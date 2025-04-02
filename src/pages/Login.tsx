@@ -2,6 +2,7 @@ import {useEffect} from "react";
 import {GoogleAuthProvider, signInWithPopup, onAuthStateChanged} from "firebase/auth";
 import {auth} from "../firebase";
 import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 
 const provider = new GoogleAuthProvider();
 
@@ -12,7 +13,11 @@ export default function Login() {
         try {
             await signInWithPopup(auth, provider);
         } catch (error) {
-            console.error("Error al iniciar sesión:", error);
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Error desconocido al iniciar sesión");
+            }
         }
     };
 
@@ -20,6 +25,7 @@ export default function Login() {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 navigate("/administracion");
+                toast.success("Sesión iniciada correctamente");
             }
         });
 

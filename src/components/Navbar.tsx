@@ -2,6 +2,7 @@ import {signOut, onAuthStateChanged} from "firebase/auth";
 import {useEffect, useState} from "react";
 import {auth} from "../firebase";
 import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 
 export default function Navbar() {
     const [user, setUser] = useState<any>(null);
@@ -20,7 +21,11 @@ export default function Navbar() {
             await signOut(auth);
             navigate("/login");
         } catch (error) {
-            console.error("Error al cerrar sesión:", error);
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Error desconocido al cerrar sesión");
+            }
         }
     };
 

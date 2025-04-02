@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User} from "firebase/auth";
 import {auth} from "../firebase";
+import {toast} from "react-toastify";
 
 const provider = new GoogleAuthProvider();
 
@@ -11,15 +12,24 @@ export default function Auth() {
         try {
             await signInWithPopup(auth, provider);
         } catch (error) {
-            console.error("Login error:", error);
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Error desconocido al iniciar sesión");
+            }
         }
+
     };
 
     const logout = async () => {
         try {
             await signOut(auth);
         } catch (error) {
-            console.error("Logout error:", error);
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("Error desconocido al cerrar sesión");
+            }
         }
     };
 
