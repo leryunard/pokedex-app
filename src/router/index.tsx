@@ -28,7 +28,14 @@ const RequireAuth = ({children}: { children: JSX.Element }) => {
         return () => unsubscribe();
     }, []);
 
-    if (loading) return <p className="text-center mt-10">Cargando...</p>;
+    if (loading) return (
+        <div className="flex justify-center items-center min-h-screen">
+            <div className="text-center">
+                <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4"></div>
+                <p className="text-xl font-semibold text-gray-700">Cargando...</p>
+            </div>
+        </div>
+    );
 
     return authenticated ? children : <Navigate to="/login" state={{from: location}} replace/>;
 };
@@ -63,7 +70,7 @@ const DocumentTitleHandler = () => {
 
     useEffect(() => {
         const titleMap: Record<string, string> = {
-            "/login": "Iniciar sesión",
+            "/login": "Pokédex App - Iniciar sesión",
             "/forbidden": "Acceso denegado",
             "/administracion": "Panel de administración",
         };
