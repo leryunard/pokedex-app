@@ -33,13 +33,16 @@ export default function Login() {
     }, [navigate]);
 
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 text-center px-4">
-            <h1 className="text-3xl font-bold mb-4">Iniciar sesión</h1>
+        <div className="min-h-screen flex flex-col justify-center items-center bg-yellow-300 text-center px-4">
+            <img src="/src/assets/logo.png" alt="App logo" className="mb-4"/>
+            <h1 className="text-3xl font-bold mb-4">Sign In</h1>
             <button
                 onClick={login}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded text-lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded text-lg flex items-center cursor-pointer"
             >
-                Iniciar sesión con Google
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google logo"
+                     className="w-6 h-6 mr-2"/>
+                Sign in with Google
             </button>
         </div>
     );
