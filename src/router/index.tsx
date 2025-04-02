@@ -14,8 +14,7 @@ import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import Forbidden from "../pages/Forbidden";
 import DefaultLayout from "../layouts/DefaultLayout";
-import AdminHome from "../pages/admin/AdminHome";
-import Regions from "../pages/admin/Regions";
+import adminRoutes from "./adminRoutes";
 
 const RequireAuth = ({children}: { children: JSX.Element }) => {
     const [loading, setLoading] = useState(true);
@@ -59,8 +58,9 @@ const AppRouter = () => {
                         </RequireAuth>
                     }
                 >
-                    <Route index element={<AdminHome/>}/>
-                    <Route path="regions" element={<Regions/>}/>
+                    {adminRoutes.map((route, index) => (
+                        <Route key={index} path={route.path} element={route.element}/>
+                    ))}
                 </Route>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
