@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {auth} from "../firebase";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
+import {FaSignOutAlt} from 'react-icons/fa';
 
 export default function Navbar() {
     const [user, setUser] = useState<any>(null);
@@ -35,7 +36,7 @@ export default function Navbar() {
 
             {user && (
                 <div className="flex items-center gap-4">
-                    <p className="text-gray-700">{user.displayName}</p>
+                    <p className="text-gray-700 truncate max-w-xs">{user.displayName}</p>
                     <img
                         src={user.photoURL || ""}
                         alt="Foto de perfil"
@@ -43,9 +44,12 @@ export default function Navbar() {
                     />
                     <button
                         onClick={handleLogout}
-                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded"
+                        className="relative group bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded flex items-center cursor-pointer"
                     >
-                        Cerrar sesión
+                        <FaSignOutAlt className="w-6 h-6" />
+                        <span className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-4">
+        Log out
+    </span>
                     </button>
                 </div>
             )}

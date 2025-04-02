@@ -14,6 +14,8 @@ import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import Forbidden from "../pages/Forbidden";
 import DefaultLayout from "../layouts/DefaultLayout";
+import AdminHome from "../pages/admin/AdminHome";
+import Regions from "../pages/admin/Regions";
 
 const RequireAuth = ({children}: { children: JSX.Element }) => {
     const [loading, setLoading] = useState(true);
@@ -31,7 +33,8 @@ const RequireAuth = ({children}: { children: JSX.Element }) => {
     if (loading) return (
         <div className="flex justify-center items-center min-h-screen">
             <div className="text-center">
-                <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4"></div>
+                <div
+                    className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 mb-4"></div>
                 <p className="text-xl font-semibold text-gray-700">Cargando...</p>
             </div>
         </div>
@@ -49,13 +52,16 @@ const AppRouter = () => {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/forbidden" element={<Forbidden/>}/>
                 <Route
-                    path="/administracion/*"
+                    path="/admin"
                     element={
                         <RequireAuth>
                             <DefaultLayout/>
                         </RequireAuth>
                     }
-                />
+                >
+                    <Route index element={<AdminHome/>}/>
+                    <Route path="regions" element={<Regions/>}/>
+                </Route>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
         </Router>
@@ -72,7 +78,7 @@ const DocumentTitleHandler = () => {
         const titleMap: Record<string, string> = {
             "/login": "Pokédex App - Sign In",
             "/forbidden": "Denied Access",
-            "/administracion": "Dashboard",
+            "/admin": "Dashboard",
         };
 
         const title = titleMap[location.pathname] || "Pokédex App";
