@@ -1,46 +1,48 @@
 # Pokedex App
 
-Este proyecto es una aplicación de Pokedex construida con React, TypeScript y Vite. Utiliza TailwindCSS para el diseño y Firebase para la autenticación y almacenamiento de datos.
+This project is a Pokedex application built with React, TypeScript, and Vite. It uses TailwindCSS for styling and Firebase for authentication and data storage.
 
-## Tecnologías Utilizadas
+## Technologies Used
 
-- **React**: Biblioteca de JavaScript para construir interfaces de usuario.
-- **TypeScript**: Un superconjunto de JavaScript que añade tipos estáticos.
-- **Vite**: Un entorno de desarrollo rápido y ligero.
-- **TailwindCSS**: Un framework de CSS para un diseño rápido y eficiente.
-- **Firebase**: Plataforma de desarrollo de aplicaciones de Google.
+- **React**: A JavaScript library for building user interfaces.
+- **TypeScript**: A superset of JavaScript that adds static typing.
+- **Vite**: A fast and lightweight development environment.
+- **TailwindCSS**: A CSS framework for fast and efficient design.
+- **Firebase**: Google's application development platform.
 
-## Instalación
+## Installation
 
-1. Instalar Yarn si no está instalado:
+1. Install Yarn if it's not already installed:
    ```sh
    npm install -g yarn
+   ```
 
-2. Instalar las dependencias del proyecto:
+2. Install the project dependencies:
    ```sh
    yarn install
-   
-## Scripts Disponibles
+   ```
 
-En el directorio del proyecto, puedes ejecutar:
+## Available Scripts
+
+In the project directory, you can run:
 
 ### `yarn dev`
 
-Inicia la aplicación en modo de desarrollo.\
+Starts the application in development mode.
 
 ### `yarn build`
 
-Construye la aplicación para producción en la carpeta `dist`.\
-La construcción está minificada y los nombres de los archivos incluyen los hashes.
+Builds the application for production in the `dist` folder.  
+The build is minified and filenames include hashes.
 
 ### `yarn preview`
 
-Sirve la aplicación construida para producción localmente.
+Serves the production build locally.
 
 ### `yarn lint`
 
-Ejecuta ESLint para analizar el código en busca de problemas.
+Runs ESLint to analyze the code for potential issues.
 
 ### `yarn format`
 
-Ejecuta Prettier para formatear el código.
+Runs Prettier to format the code.
