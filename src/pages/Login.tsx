@@ -48,7 +48,7 @@ export default function Login() {
 
     return (
         <div className="min-h-screen flex flex-col justify-center items-center bg-yellow-300 text-center px-4">
-            <img src="/src/assets/logo.png" alt="App logo" className="mb-4"/>
+            <img src="./../assets/logo.png" alt="App logo" className="mb-4"/>
             <h1 className="text-3xl font-bold mb-4">Sign In</h1>
             <button
                 onClick={login}
