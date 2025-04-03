@@ -118,6 +118,7 @@ export default function RegionPokedex() {
                     <p className="text-gray-600 mt-1">
                         Captured {captured.length} / {pokemonList.length}
                     </p>
+                    <p>Just select the Pokémon card to save it to your Pokédex.</p>
                 </div>
                 <button
                     onClick={() => navigate("/admin")}
