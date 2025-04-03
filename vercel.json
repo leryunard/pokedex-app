@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/public/team/:id",
-      "destination": "/public/team/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
