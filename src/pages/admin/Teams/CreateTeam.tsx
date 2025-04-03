@@ -31,9 +31,10 @@ export default function CreateTeam() {
     const [selectedPokemon, setSelectedPokemon] = useState<PokemonEntry[]>([]);
     const [filter, setFilter] = useState("");
     const [pokemonDetailsMap, setPokemonDetailsMap] = useState<Record<string, PokemonDetails>>({});
+    const POKEAPI_URL = "https://pokeapi.co/api/v2";
 
     useEffect(() => {
-        fetch("https://pokeapi.co/api/v2/region")
+        fetch(`${POKEAPI_URL}/region`)
             .then((res) => res.json())
             .then((data) => setRegions(data.results))
             .catch(() => toast.error("Error loading regions"));
@@ -44,10 +45,10 @@ export default function CreateTeam() {
 
         const fetchRegionPokemon = async () => {
             try {
-                const regionRes = await fetch(`https://pokeapi.co/api/v2/region/${selectedRegion}`);
+                const regionRes = await fetch(`${POKEAPI_URL}/region/${selectedRegion}`);
                 const regionData = await regionRes.json();
                 const pokedexName = regionData.pokedexes[0].name;
-                const pokedexRes = await fetch(`https://pokeapi.co/api/v2/pokedex/${pokedexName}`);
+                const pokedexRes = await fetch(`${POKEAPI_URL}/pokedex/${pokedexName}`);
                 const pokedexData = await pokedexRes.json();
                 setPokemonList(pokedexData.pokemon_entries);
             } catch {
@@ -68,7 +69,7 @@ export default function CreateTeam() {
         }
 
         try {
-            const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+            const res = await fetch(`${POKEAPI_URL}/pokemon/${name}`);
             const data = await res.json();
             const sprite = data.sprites.front_default;
             const types = data.types.map((t: PokemonType) => t.type.name);

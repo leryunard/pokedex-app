@@ -33,6 +33,7 @@ interface PokemonDetail {
 }
 
 export default function Teams() {
+    const POKEAPI_URL = "https://pokeapi.co/api/v2";
     const [teams, setTeams] = useState<Team[]>([]);
     const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
     const [showConfirm, setShowConfirm] = useState(false);
@@ -104,8 +105,8 @@ export default function Teams() {
         const fetchDetails = async () => {
             try {
                 const [res1, res2] = await Promise.all([
-                    fetch(`https://pokeapi.co/api/v2/pokemon/${selectedPokemonName}`),
-                    fetch(`https://pokeapi.co/api/v2/pokemon-species/${selectedPokemonName}`),
+                    fetch(`${POKEAPI_URL}/${selectedPokemonName}`),
+                    fetch(`${POKEAPI_URL}/pokemon-species/${selectedPokemonName}`),
                 ]);
 
                 const data1 = await res1.json();
@@ -300,9 +301,10 @@ function PokemonCard({
     onClick: () => void;
 }) {
     const [sprite, setSprite] = useState("");
+    const POKEAPI_URL = "https://pokeapi.co/api/v2";
 
     useEffect(() => {
-        fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+        fetch(`${POKEAPI_URL}/pokemon/${name}`)
             .then((res) => res.json())
             .then((data) => {
                 setSprite(data.sprites.front_default || "");
