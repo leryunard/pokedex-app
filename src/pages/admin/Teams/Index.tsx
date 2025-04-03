@@ -3,6 +3,7 @@ import {ref, onValue, remove, set} from "firebase/database";
 import {database, auth} from "../../../firebase";
 import {toast} from "react-toastify";
 import Modal from "../../../components/Modal";
+import {useNavigate} from 'react-router-dom';
 
 interface PokemonEntry {
     name: string;
@@ -92,6 +93,12 @@ export default function Teams() {
     const confirmDelete = (team: Team) => {
         setSelectedTeam(team);
         setShowConfirm(true);
+    };
+
+    const navigate = useNavigate();
+
+    const handleEdit = (teamId: string) => {
+        navigate(`/admin/teams/edit/${teamId}`);
     };
 
     const deleteTeam = async () => {
@@ -196,7 +203,7 @@ export default function Teams() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredTeams.map((team) => (
                     <div key={team.id} className="relative bg-white shadow-md rounded-lg p-4">
-                        <h3 className="text-lg font-bold mb-2">{team.name}</h3>
+                        <h3 className="text-lg font-bold mb-2 mt-5">{team.name}</h3>
 
                         <div className="grid grid-cols-3 gap-2 mb-2">
                             {team.pokemon.map((poke, idx) => (
@@ -210,14 +217,20 @@ export default function Teams() {
                         </div>
                         <div className="absolute top-2 right-2 flex gap-6">
                             <button
+                                onClick={() => handleEdit(team.id)}
+                                className="text-green-500 hover:text-green-700 text-sm font-bold cursor-pointer"
+                            >
+                                Edit
+                            </button>
+                            <button
                                 onClick={() => confirmDelete(team)}
-                                className="text-red-500 hover:text-red-700 text-sm cursor-pointer"
+                                className="text-red-500 hover:text-red-700 text-sm font-bold cursor-pointer"
                             >
                                 Delete
                             </button>
                             <button
                                 onClick={() => handleShare(team)}
-                                className="text-blue-500 hover:text-blue-700 text-sm cursor-pointer"
+                                className="text-blue-500 hover:text-blue-700 text-sm font-bold cursor-pointer"
                             >
                                 Share
                             </button>
