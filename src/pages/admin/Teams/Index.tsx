@@ -140,7 +140,8 @@ export default function Teams() {
 
     return (
         <div className="p-4 max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6">My Pokémon Teams</h2>
+            <h2 className="text-2xl font-bold mb-2">My Pokémon Teams</h2>
+            <h3 className="text-lg mb-6 text-green-600">Click on a Pokémon to view its details</h3>
 
             {/* Filtros */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
