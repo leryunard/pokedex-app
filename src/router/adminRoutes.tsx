@@ -4,7 +4,7 @@ import Teams from "../pages/admin/Teams/Index";
 import CreateTeam from "../pages/admin/Teams/CreateTeam";
 
 const adminRoutes = [
-    { path: "", element: <AdminHome />, name: "Dashboard", showInNavbar: false },
+    { path: "", element: <AdminHome />, name: "Dashboard", showInNavbar: true },
     { path: "regions", element: <Regions />, name: "Regions", showInNavbar: false },
     { path: "teams", element: <Teams />, name: "Teams", showInNavbar: true },
     { path: "teams/new", element: <CreateTeam />, name: "Create Team", showInNavbar: true },
