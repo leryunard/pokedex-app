@@ -4,8 +4,8 @@ import Teams from "../pages/admin/Teams/Index";
 import CreateTeam from "../pages/admin/Teams/CreateTeam";
 
 const adminRoutes = [
-    { path: "", element: <AdminHome />, name: "Dashboard", showInNavbar: true },
-    { path: "regions", element: <Regions />, name: "Regions", showInNavbar: false },
+    { path: "", element: <AdminHome />, name: "Pokédex", showInNavbar: true },
+    { path: "regions/:name", element: <Regions />, name: "Regions", showInNavbar: false },
     { path: "teams", element: <Teams />, name: "Teams", showInNavbar: true },
     { path: "teams/new", element: <CreateTeam />, name: "Create Team", showInNavbar: true },
     { path: "teams/edit/:id", element: <CreateTeam />, name: "Edit Team", showInNavbar: false },

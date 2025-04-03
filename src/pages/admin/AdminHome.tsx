@@ -56,7 +56,8 @@ export default function AdminHome() {
                     return (
                         <div
                             key={idx}
-                            className="relative overflow-hidden bg-white border-2 border-red-500 rounded-lg shadow-md p-4 hover:scale-105 hover:ring-2 hover:ring-red-400 transition-transform duration-300"
+                            className="relative overflow-hidden bg-white border-2 border-red-500 rounded-lg shadow-md p-4 hover:scale-105 hover:ring-2 hover:ring-red-400 transition-transform duration-300 cursor-pointer"
+                            onClick={() => navigate(`/admin/regions/${region.name}`)}
                         >
                             <div className="absolute inset-0 opacity-70 z-0 pointer-events-none">
                                 {spriteUrls.map((url, i) => (
@@ -76,7 +77,7 @@ export default function AdminHome() {
 
                             <div className="relative z-10">
                                 <h3 className="text-xl font-bold text-gray-800 capitalize">{cleanName}</h3>
-                                <p className="text-sm text-gray-600">Pokémon Region</p>
+                                <p className="text-sm text-gray-600">{spriteRange[1] - spriteRange[0] + 1} Pokémon</p>
                             </div>
                         </div>
                     );
