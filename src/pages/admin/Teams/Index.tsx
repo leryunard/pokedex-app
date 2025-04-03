@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {ref, onValue, remove} from "firebase/database";
+import {ref, onValue, remove, set} from "firebase/database";
 import {database, auth} from "../../../firebase";
 import {toast} from "react-toastify";
 import Modal from "../../../components/Modal";
@@ -68,6 +68,26 @@ export default function Teams() {
             }
         });
     }, []);
+
+    const generateShortToken = (teamId: string) => {
+        return btoa(teamId);
+    };
+
+    const handleShare = async (team: Team) => {
+        try {
+            await set(ref(database, `public/teams/${team.id}`), team);
+
+            const token = generateShortToken(team.id);
+
+            const publicUrl = `${window.location.origin}/public/team/${token}`;
+            await navigator.clipboard.writeText(publicUrl);
+
+            toast.success("Link copied to clipboard");
+        } catch (error) {
+            console.error("Error copying the link", error);
+            toast.error("Error copying the link");
+        }
+    };
 
     const confirmDelete = (team: Team) => {
         setSelectedTeam(team);
@@ -188,13 +208,21 @@ export default function Teams() {
                                 />
                             ))}
                         </div>
+                        <div className="absolute top-2 right-2 flex gap-6">
+                            <button
+                                onClick={() => confirmDelete(team)}
+                                className="text-red-500 hover:text-red-700 text-sm cursor-pointer"
+                            >
+                                Delete
+                            </button>
+                            <button
+                                onClick={() => handleShare(team)}
+                                className="text-blue-500 hover:text-blue-700 text-sm cursor-pointer"
+                            >
+                                Share
+                            </button>
+                        </div>
 
-                        <button
-                            onClick={() => confirmDelete(team)}
-                            className="absolute top-2 right-2 text-red-500 hover:text-red-700 text-sm cursor-pointer"
-                        >
-                            Delete
-                        </button>
                     </div>
                 ))}
             </div>

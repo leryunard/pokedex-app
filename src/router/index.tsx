@@ -14,6 +14,7 @@ import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import Forbidden from "../pages/Forbidden";
 import DefaultLayout from "../layouts/DefaultLayout";
+import PublicTeam from "../pages/admin/Teams/PublicView.tsx";
 import adminRoutes from "./adminRoutes";
 
 const RequireAuth = ({children}: { children: JSX.Element }) => {
@@ -50,6 +51,7 @@ const AppRouter = () => {
                 <Route path="/" element={<Navigate to="/login" replace/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/forbidden" element={<Forbidden/>}/>
+                <Route path="/public/team/:token" element={<PublicTeam/>}/>
                 <Route
                     path="/admin"
                     element={
