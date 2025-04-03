@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/*Estílos de la pantalla de carga*/
 @keyframes spin {
     0% {
         transform: rotate(0deg);
@@ -16,4 +17,20 @@
 
 body {
     font-family: "MuseoModerno", sans-serif;
+}
+
+/*Estílos del SelectInput*/
+.p-dropdown-panel {
+    border-radius: 8px;
+    background-color: white;
+    border: 1px solid #030325 !important;
+}
+
+.p-dropdown-item {
+    border-radius: 8px;
+    padding: 5px 10px;
+}
+
+.p-dropdown-item:hover {
+    background-color: #e0f7fa !important;
 }

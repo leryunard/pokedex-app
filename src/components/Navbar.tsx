@@ -47,22 +47,24 @@ export default function Navbar() {
 
                 {/* Menú en pantallas grandes */}
                 <div className="hidden lg:flex gap-6">
-                    {adminRoutes.filter(route => route.showInNavbar).map((route, index) => (
-                        <NavLink
-                            key={index}
-                            to={`/admin/${route.path}`}
-                            end={route.path === ""}
-                            className={({ isActive }) =>
-                                `px-3 py-2 rounded-md transition-all duration-200 ${
-                                    isActive
-                                        ? "bg-[#b70a24] text-white font-semibold"
-                                        : "hover:bg-[#dc0b2c] hover:text-white"
-                                }`
-                            }
-                        >
-                            {route.name}
-                        </NavLink>
-                    ))}
+                    {adminRoutes
+                        .filter((route) => route.showInNavbar)
+                        .map((route) => (
+                            <NavLink
+                                key={route.path}
+                                to={`/admin/${route.path}`}
+                                end
+                                className={({ isActive }) =>
+                                    `px-3 py-2 rounded-md transition-all duration-200 ${
+                                        isActive
+                                            ? "bg-[#b70a24] text-white font-semibold"
+                                            : "hover:bg-[#dc0b2c] hover:text-white"
+                                    }`
+                                }
+                            >
+                                {route.name}
+                            </NavLink>
+                        ))}
                 </div>
 
                 {/* Usuario + Logout */}
@@ -87,28 +89,30 @@ export default function Navbar() {
                 )}
             </div>
 
-            {/* Menú desplegable en móvil */}
+            {/* Menú móvil */}
             {menuOpen && (
                 <div className="flex flex-col mt-4 gap-3 lg:hidden">
-                    {adminRoutes.filter(route => route.showInNavbar).map((route, index) => (
-                        <NavLink
-                            key={index}
-                            to={`/admin/${route.path}`}
-                            end={route.path === ""}
-                            className={({ isActive }) =>
-                                `px-3 py-2 rounded-md transition-all duration-200 ${
-                                    isActive
-                                        ? "bg-[#b70a24] text-white font-semibold"
-                                        : "hover:bg-[#dc0b2c] hover:text-white"
-                                }`
-                            }
-                            onClick={() => setMenuOpen(false)}
-                        >
-                            {route.name}
-                        </NavLink>
-                    ))}
+                    {adminRoutes
+                        .filter((route) => route.showInNavbar)
+                        .map((route) => (
+                            <NavLink
+                                key={route.path}
+                                to={`/admin/${route.path}`}
+                                end
+                                className={({ isActive }) =>
+                                    `px-3 py-2 rounded-md transition-all duration-200 ${
+                                        isActive
+                                            ? "bg-[#b70a24] text-white font-semibold"
+                                            : "hover:bg-[#dc0b2c] hover:text-white"
+                                    }`
+                                }
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                {route.name}
+                            </NavLink>
+                        ))}
 
-                    {/* Usuario + logout en móvil */}
+                    {/* Usuario y logout (móvil) */}
                     {user && (
                         <div className="flex flex-col gap-2 mt-2">
                             <div className="flex items-center gap-2">
