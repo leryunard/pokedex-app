@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import TextInput from "../../../components/ui/TextInput.tsx";
 import SelectInput from "../../../components/ui/SelectInput.tsx";
 import {toast} from "react-toastify";
@@ -106,7 +106,7 @@ export default function CreateTeam() {
         fetchRegionPokemon();
     }, [selectedRegion]);
 
-    const fetchPokemonDetails = async (name: string) => {
+    const fetchPokemonDetails = useCallback(async (name: string) => {
         if (pokemonDetailsMap[name]) return;
 
         try {
@@ -138,13 +138,18 @@ export default function CreateTeam() {
         } catch {
             console.error(`Failed to fetch details for ${name}`);
         }
-    };
+    }, [pokemonDetailsMap, POKEAPI_URL]);
+
+    const filteredPokemon = pokemonList.filter(p =>
+        p.pokemon_species.name.toLowerCase().includes(filter.toLowerCase()) ||
+        String(p.entry_number).includes(filter)
+    );
 
     useEffect(() => {
         filteredPokemon.forEach((p) => {
             fetchPokemonDetails(p.pokemon_species.name);
         });
-    }, [pokemonList, filter]);
+    }, [pokemonList, filter, fetchPokemonDetails, filteredPokemon]);
 
     const handleSelectPokemon = (pokemon: PokemonEntry) => {
         const alreadySelected = selectedPokemon.some(p => p.pokemon_species.name === pokemon.pokemon_species.name);
@@ -216,11 +221,6 @@ export default function CreateTeam() {
             toast.error("Failed to save team");
         }
     };
-
-    const filteredPokemon = pokemonList.filter(p =>
-        p.pokemon_species.name.toLowerCase().includes(filter.toLowerCase()) ||
-        String(p.entry_number).includes(filter)
-    );
 
     return (
         <div className="p-4 max-w-6xl mx-auto">
