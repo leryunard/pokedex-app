@@ -2,9 +2,9 @@ import {useCallback, useEffect, useState} from "react";
 import TextInput from "../../../components/ui/TextInput.tsx";
 import SelectInput from "../../../components/ui/SelectInput.tsx";
 import {toast} from "react-toastify";
-import {ref, push} from "firebase/database";
+import {ref, push, update, get} from "firebase/database";
 import {database, auth} from "../../../firebase.ts";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Modal from "../../../components/Modal.tsx";
 
 interface Region {
@@ -58,6 +58,7 @@ interface SpeciesData {
 
 export default function CreateTeam() {
     const navigate = useNavigate();
+    const {id} = useParams<{ id: string }>();
     const [teamName, setTeamName] = useState("");
     const [selectedRegion, setSelectedRegion] = useState("");
     const [regions, setRegions] = useState<Region[]>([]);
@@ -77,12 +78,42 @@ export default function CreateTeam() {
             .catch(() => toast.error("Error loading regions"));
     }, []);
 
+    useEffect(() => {
+        if (id) {
+            const fetchTeamData = async () => {
+                try {
+                    const userId = auth.currentUser?.uid;
+                    if (!userId) {
+                        toast.error("You must be logged in to edit a team");
+                        return;
+                    }
+                    const teamRef = ref(database, `teams/${userId}/${id}`);
+                    const teamSnapshot = await get(teamRef);
+                    if (teamSnapshot.exists()) {
+                        const teamData = teamSnapshot.val();
+                        setTeamName(teamData.name);
+                        setSelectedRegion(teamData.region);
+                        setSelectedPokemon(teamData.pokemon.map((p: any) => ({
+                            entry_number: p.id,
+                            pokemon_species: {name: p.name}
+                        })));
+                    } else {
+                        toast.error("Team not found");
+                    }
+                } catch {
+                    toast.error("Failed to load team data");
+                }
+            };
+
+            fetchTeamData();
+        }
+    }, [id]);
+
     const handleOpenPokemonModal = async (name: string) => {
         const details = pokemonDetailsMap[name];
         if (!details) {
             await fetchPokemonDetails(name);
         }
-        console.log("Details", pokemonDetailsMap[name]);
         setSelectedPokemonDetails(pokemonDetailsMap[name]);
         setShowPokemonModal(true);
     };
@@ -97,7 +128,16 @@ export default function CreateTeam() {
                 const pokedexName = regionData.pokedexes[0].name;
                 const pokedexRes = await fetch(`${POKEAPI_URL}/pokedex/${pokedexName}`);
                 const pokedexData = await pokedexRes.json();
-                setPokemonList(pokedexData.pokemon_entries);
+
+                const validPokemonEntries = [];
+                for (const entry of pokedexData.pokemon_entries) {
+                    const res = await fetch(`${POKEAPI_URL}/pokemon/${entry.pokemon_species.name}`);
+                    if (res.ok) {
+                        validPokemonEntries.push(entry);
+                    }
+                }
+
+                setPokemonList(validPokemonEntries);
             } catch {
                 toast.error("Failed to load Pokémon for region");
             }
@@ -111,6 +151,13 @@ export default function CreateTeam() {
 
         try {
             const res = await fetch(`${POKEAPI_URL}/pokemon/${name}`);
+            if (!res.ok) {
+                if (res.status === 404) {
+                    return;
+                }
+                throw new Error(`Failed to fetch details for ${name}`);
+            }
+
             const data: {
                 id: number;
                 name: string;
@@ -131,12 +178,14 @@ export default function CreateTeam() {
             const abilities = data.abilities.map((a) => a.ability.name);
             const moves = data.moves.map((m) => m.move.name);
 
-            setPokemonDetailsMap((prev) => ({
-                ...prev,
-                [name]: {id, name, sprite, types, description, abilities, moves},
-            }));
-        } catch {
-            console.error(`Failed to fetch details for ${name}`);
+            if (id && sprite && types.length && description && abilities.length && moves.length) {
+                setPokemonDetailsMap((prev) => ({
+                    ...prev,
+                    [name]: {id, name, sprite, types, description, abilities, moves},
+                }));
+            }
+        } catch (error) {
+            console.error(`Failed to fetch details for ${name}:`, error);
         }
     }, [pokemonDetailsMap, POKEAPI_URL]);
 
@@ -209,14 +258,19 @@ export default function CreateTeam() {
         };
 
         try {
-            const newTeamRef = ref(database, `teams/${userId}`);
-            await push(newTeamRef, teamData);
+            const teamRef = ref(database, `teams/${userId}/${id || ''}`);
+            if (id) {
+                await update(teamRef, teamData);
+                toast.success("Team updated successfully!");
+            } else {
+                await push(teamRef, teamData);
+                toast.success("Team saved successfully!");
+            }
             setTeamName("");
             setSelectedRegion("");
             setSelectedPokemon([]);
             setErrors({});
             navigate("/admin/teams");
-            toast.success("Team saved successfully!");
         } catch {
             toast.error("Failed to save team");
         }
@@ -224,7 +278,7 @@ export default function CreateTeam() {
 
     return (
         <div className="p-4 max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6">Create New Pokémon Team</h2>
+            <h2 className="text-2xl font-bold mb-6">{id ? "Edit Pokémon Team" : "Create New Pokémon Team"}</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -251,7 +305,6 @@ export default function CreateTeam() {
 
             {selectedRegion && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                    {/* Lista de Pokémon */}
                     <div className="md:col-span-2">
                         <TextInput
                             label="Search Pokémon"
@@ -315,7 +368,6 @@ export default function CreateTeam() {
                         </div>
                     </div>
 
-                    {/* Pokémon seleccionados */}
                     <div className="md:col-span-1">
                         <h3 className="text-lg font-semibold mb-2">Selected Pokémon ({selectedPokemon.length}/6)</h3>
                         <ul className="space-y-2">
@@ -343,7 +395,7 @@ export default function CreateTeam() {
                     onClick={handleSaveTeam}
                     className="bg-[#dc0b2c] hover:bg-red-700 text-white px-6 py-3 rounded-md font-semibold cursor-pointer"
                 >
-                    Save Team
+                    {id ? "Update Team" : "Save Team"}
                 </button>
             </div>
             <Modal
