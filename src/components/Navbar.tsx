@@ -6,14 +6,24 @@ import { toast } from "react-toastify";
 import { FaSignOutAlt } from "react-icons/fa";
 import adminRoutes from "../router/adminRoutes";
 
+interface User {
+    displayName: string;
+    photoURL: string;
+}
+
 export default function Navbar() {
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<User | null>(null);
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
+            if (currentUser) {
+                const { displayName, photoURL } = currentUser;
+                setUser({ displayName: displayName || "", photoURL: photoURL || "" });
+            } else {
+                setUser(null);
+            }
         });
 
         return () => unsubscribe();
@@ -72,7 +82,7 @@ export default function Navbar() {
                     <div className="hidden lg:flex items-center gap-4">
                         <p className="truncate max-w-xs">{user.displayName}</p>
                         <img
-                            src={user.photoURL || ""}
+                            src={user.photoURL}
                             alt="Profile picture"
                             className="w-10 h-10 rounded-full object-cover"
                         />
@@ -82,8 +92,8 @@ export default function Navbar() {
                         >
                             <FaSignOutAlt className="w-6 h-6" />
                             <span className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 hidden group-hover:block bg-black text-white text-xs rounded py-1 px-4">
-                Log out
-              </span>
+                                Log out
+                            </span>
                         </button>
                     </div>
                 )}
@@ -117,7 +127,7 @@ export default function Navbar() {
                         <div className="flex flex-col gap-2 mt-2">
                             <div className="flex items-center gap-2">
                                 <img
-                                    src={user.photoURL || ""}
+                                    src={user.photoURL}
                                     alt="Profile"
                                     className="w-8 h-8 rounded-full object-cover"
                                 />
