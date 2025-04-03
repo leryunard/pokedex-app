@@ -110,6 +110,10 @@ export default function CreateTeam() {
             newErrors.name = "Team name is required";
             toast.error(newErrors.name);
             hasError = true;
+        } else if (teamName.length > 20) {
+            newErrors.name = "Team name must be 20 characters or less";
+            toast.error(newErrors.name);
+            hasError = true;
         }
 
         if (!selectedRegion) {

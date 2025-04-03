@@ -105,7 +105,7 @@ export default function Teams() {
         const fetchDetails = async () => {
             try {
                 const [res1, res2] = await Promise.all([
-                    fetch(`${POKEAPI_URL}/${selectedPokemonName}`),
+                    fetch(`${POKEAPI_URL}/pokemon/${selectedPokemonName}`),
                     fetch(`${POKEAPI_URL}/pokemon-species/${selectedPokemonName}`),
                 ]);
 
